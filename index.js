@@ -56,13 +56,61 @@ app.delete("/competitor/:id", (req, res) => {
             1
         )[0];
         res.json({
-            message: "Gost deleted successfully",
+            message: "Competitor deleted successfully",
             competitors: competitorIndex,
         });
     } else {
         res.status(404).json({ message: "Competitor not found" });
     }
 });
+
+app.get("/races", (req, res) => {
+    res.json(data.races);
+});
+app.get("/races/:id", (req, res) => {
+    const id = req.params.id;
+    const result = data.races.find((x) => x.id == id);
+    res.json(result);
+});
+app.post("/races", (req, res) => {
+    const newRaces = req.body;
+    data.races.push(newRaces);
+    res.status(201).json({
+        message: "Nova utrka je uspiješno kreirana",
+        races: newRaces,
+    });
+});
+app.delete("/races/:id", (req, res) => {
+    const id = req.params.id;
+    const racesIndex = data.races.findIndex((x) => x.id == id);
+    if (racesIndex !== -1) {
+        const deletedRaces = data.races.splice(racesIndex, 1)[0];
+        res.json({
+            message: "Race deleted successfully",
+            races: racesIndex,
+        });
+    } else {
+        res.status(404).json({ message: "Race not found" });
+    }
+});
+app.patch("/races/:id", (req, res) => {
+    const id = req.params.id;
+    const updateData = req.body;
+    const racesIndex = data.races.findIndex((x) => x.id == id);
+    if (racesIndex !== -1) {
+        data.races[racesIndex] = {
+            ...data.races[racesIndex],
+            ...updateData,
+        };
+        res.json({
+            message: "Race updated successfully",
+            races: data.races[racesIndex],
+        });
+    } else {
+        res.status(404).json({ message: "Race not found" });
+    }
+});
+
 
 app.listen(port, () => {
     console.log(`Servis radi na portu ${port}`);

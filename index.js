@@ -1,15 +1,13 @@
 import express from "express";
-import { connectToMongoDB } from "./src/db.js";
+// import db from "../backend-run/src/db.js";
 import data from "./store.js";
 import axios from "axios";
+import { raceMethods } from "./controllers/raceController.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-
-// Povezivanje s MongoDB
-await connectToMongoDB();
 
 app.get("/admin", (req, res) => {
     res.json(data.admin);
@@ -117,9 +115,18 @@ app.patch("/races/:id", (req, res) => {
 });
 
 
+// // MONGO DB
+// app.get("/races", raceMethods.getAllRaces);
+// app.get("/races/:id", raceMethods.getRaceById);
+// app.post("/races", raceMethods.newRace);
+
+
+
 app.listen(port, () => {
     console.log(`Servis radi na portu ${port}`);
 });
+
+
 
 
 

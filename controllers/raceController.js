@@ -1,4 +1,5 @@
-import db from "../backend-run/src/db.js";
+
+import db from "../src/db.js";
 const raceCollection = db.collection("races");
 
 // Ispisivanje svih utrka
@@ -51,3 +52,4 @@ export const raceMethods = {
     getRaceById,
     newRace,
 };
+

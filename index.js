@@ -2,6 +2,7 @@ import express from "express";
 import db from "../backend-run/src/db.js";
 import { raceMethods } from "./controllers/raceController.js";
 import { guestMethods } from "./controllers/guestController.js";
+import { radniciMethods } from "./controllers/adminController.js";
 import axios from "axios";
 
 
@@ -23,6 +24,13 @@ app.get("/guests", guestMethods.getAllGuests);
 app.get("/guests/:id", guestMethods.getGuestById);
 app.post("/guests", guestMethods.newGuest);
 app.delete("/guests", guestMethods.deleteGuest);
+
+// Za admine
+app.get("/radnici", radniciMethods.getAllRadnici);
+app.get("/radnici/:id", radniciMethods.getRadnikById);
+app.post("/radnici", radniciMethods.newRadnik);
+app.delete("/radnici", radniciMethods.deleteRadnik);
+
 
 app.listen(port, () => {
     console.log(`Servis radi na portu ${port}`);

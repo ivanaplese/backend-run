@@ -1,5 +1,7 @@
 import db from "../src/db.js";
 const guestsCollection = db.collection("users");
+
+
 // Ispisivanje svih korisnika
 export const getAllGuests = async (req, res) => {
     try {
@@ -10,6 +12,7 @@ export const getAllGuests = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 //Traženje samo jednog gosta
 export const getGuestById = async (req, res) => {
     const guestId = req.params.id; // req.params.id je string
@@ -23,6 +26,7 @@ export const getGuestById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 // Dodavanje novog gosta
 export const newGuest = async (req, res) => {
     const { id, firstName, secondName, dateOfBirth, role, email, password } =
@@ -44,6 +48,7 @@ export const newGuest = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 // Brisanje samo jednog gosta
 export const deleteGuest = async (req, res) => {
     const guestId = req.params.id;
@@ -59,6 +64,8 @@ export const deleteGuest = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
 export const guestMethods = {
     getAllGuests,
     getGuestById,

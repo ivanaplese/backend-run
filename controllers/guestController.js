@@ -15,9 +15,11 @@ export const getAllGuests = async (req, res) => {
 
 //Traženje samo jednog gosta
 export const getGuestById = async (req, res) => {
-    const guestId = req.params.id; // req.params.id je string
+    const guestId = req.params.id;
     try {
-        const guest = await guestsCollection.findOne({ id: parseInt(guestId) }); // Parsiraj kao broj ako je id broj
+        const guest = await guestsCollection.findOne({
+            _id: new ObjectId(guestId),
+        });
         if (!guest) {
             return res.status(404).json({ message: "Odabrani gost nije pronađen." });
         }

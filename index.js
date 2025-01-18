@@ -1,5 +1,5 @@
 import express from "express";
-// import db from "../backend-run/src/db.js";
+import db from "../backend-run/src/db.js";
 import data from "./store.js";
 import axios from "axios";
 import { raceMethods } from "./controllers/raceController.js";

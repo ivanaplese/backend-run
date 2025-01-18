@@ -1,4 +1,3 @@
-
 import db from "../src/db.js";
 const raceCollection = db.collection("races");
 

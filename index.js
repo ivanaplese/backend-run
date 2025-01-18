@@ -44,11 +44,8 @@ app.post("/guest", async (req, res) => {
 app.post("/registracija", (req, res) => {
     res.status(201).send({ message: "OK" });
 });
-app.get("/guest", (req, res) => {
-    res.json([{}]);
-});
-app.get("/guest/:guestId", (req, res) => {
-    res.json([{ guestId: 5 }]);
+app.get("/gost/:id", (req, res) => {
+    res.json([{ id: 5 }]);
 });
 
 app.listen(port, () => {

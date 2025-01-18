@@ -1,6 +1,5 @@
 import db from "../src/db.js";
 const raceCollection = db.collection("races");
-
 // Ispisivanje svih utrka
 export const getAllRaces = async (req, res) => {
     try {
@@ -12,7 +11,6 @@ export const getAllRaces = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 //Traženje samo jedne utrke
 export const getRaceById = async (req, res) => {
     const raceId = req.params.id;
@@ -28,7 +26,6 @@ export const getRaceById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 // Dodavanje nove utrke
 export const newRace = async (req, res) => {
     const { id, naziv, vrsta } = req.body;
@@ -45,10 +42,8 @@ export const newRace = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 export const raceMethods = {
     getAllRaces,
     getRaceById,
     newRace,
-};
-
+}

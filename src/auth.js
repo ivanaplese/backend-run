@@ -69,4 +69,26 @@ export default {
             return res.status(403).send();
         }
     },
+    //novo
+    async changePassword(email, oldPassword, newPassword) {
+        let guestData = await guestsCollection.findOne({ email: email });
+        if (!guestData) {
+            throw new Error("User not found");
+        }
+
+        const isPasswordValid = await bcrypt.compare(oldPassword, guestData.password);
+        if (!isPasswordValid) {
+            throw new Error("Incorrect old password");
+        }
+
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+        await guestsCollection.updateOne(
+            { email: email },
+            { $set: { password: hashedNewPassword } }
+        );
+
+        return { message: "Password successfully updated" };
+    }
+
 };

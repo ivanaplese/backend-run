@@ -70,6 +70,22 @@ app.post("/guests", async (req, res) => {
     }
 });
 
+app.post("/auth/change-password", async (req, res) => {
+    const { email, oldPassword, newPassword } = req.body;
+
+    if (!email || !oldPassword || !newPassword) {
+        return res.status(400).json({ error: "All fields are required" });
+    }
+
+    try {
+        const result = await auth.changePassword(email, oldPassword, newPassword);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 app.listen(port, () => {
     console.log(`Servis radi na portu ${port}`);
 })

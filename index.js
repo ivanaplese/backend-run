@@ -10,30 +10,30 @@ import dotenv from "dotenv";
 
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.use(cors());
-
 app.use(express.json());
+dotenv.config();
 
 // MONGO DB
 
-// // Za utrke
-// app.get("/races", raceMethods.getAllRaces);
-// app.get("/races/:id", raceMethods.getRaceById);
-// app.post("/races", raceMethods.newRace);
-// app.delete("/races", raceMethods.deleteRace);
+// Za utrke
+app.get("/races", raceMethods.getAllRaces);
+app.get("/races/:id", raceMethods.getRaceById);
+app.post("/races", raceMethods.newRace);
+app.delete("/races", raceMethods.deleteRace);
 
-// // Za goste
-// app.get("/guests", guestMethods.getAllGuests);
-// app.get("/guests/:id", guestMethods.getGuestById);
-// app.post("/guests", guestMethods.newGuest);
-// app.delete("/guests", guestMethods.deleteGuest);
+// Za goste
+app.get("/guests", guestMethods.getAllGuests);
+app.get("/guests/:id", guestMethods.getGuestById);
+app.post("/guests", guestMethods.newGuest);
+app.delete("/guests", guestMethods.deleteGuest);
 
-// // Za admine
-// app.get("/radnici", radniciMethods.getAllRadnici);
-// app.get("/radnici/:id", radniciMethods.getRadnikById);
-// app.post("/radnici", radniciMethods.newRadnik);
-// app.delete("/radnici", radniciMethods.deleteRadnik);
+// Za admine
+app.get("/radnici", radniciMethods.getAllRadnici);
+app.get("/radnici/:id", radniciMethods.getRadnikById);
+app.post("/radnici", radniciMethods.newRadnik);
+app.delete("/radnici", radniciMethods.deleteRadnik);
 
 
 

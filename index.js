@@ -3,6 +3,7 @@ import db from "../backend-run/src/db.js";
 import { raceMethods } from "./controllers/raceController.js";
 import { guestMethods } from "./controllers/guestController.js";
 import { radniciMethods } from "./controllers/adminController.js";
+//import data from "./store.js";
 import auth from "./src/auth.js";
 import axios from "axios";
 import cors from "cors";
@@ -12,7 +13,9 @@ import dotenv from "dotenv";
 const app = express();
 const port = process.env.PORT || 3001;
 app.use(cors());
+
 app.use(express.json());
+
 dotenv.config();
 
 // MONGO DB
@@ -34,7 +37,6 @@ app.get("/radnici", radniciMethods.getAllRadnici);
 app.get("/radnici/:id", radniciMethods.getRadnikById);
 app.post("/radnici", radniciMethods.newRadnik);
 app.delete("/radnici", radniciMethods.deleteRadnik);
-
 
 
 // registracijaaaaaaaaaaaaaaaaaaaaaaa 
@@ -82,6 +84,7 @@ app.post("/auth/change-password", async (req, res) => {
         res.json(result);
     } catch (error) {
         res.status(500).json({ error: error.message });
+
     }
 });
 

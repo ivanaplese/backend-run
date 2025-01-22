@@ -3,9 +3,9 @@ const favoriteCollection = db.collection("favorites");
 import { ObjectId } from "mongodb";
 export const getAllFavorites = async (req, res) => {
     try {
-        const race = await favoriteCollection.find().toArray();
-        console.log("Dohvaćeni parovi favorita", race); // Dodano za debug
-        res.json(race);
+        const favorite = await favoriteCollection.find().toArray();
+        console.log("Dohvaćeni parovi favorita", favorite); // Dodano za debug
+        res.json(favorite);
     } catch (error) {
         console.error("Greška pri dohvaćanju utrka:", error.message);
         res.status(500).json({ error: error.message });
@@ -13,9 +13,10 @@ export const getAllFavorites = async (req, res) => {
 };
 export const getFavoritesById = async (req, res) => {
     const favoriteId = req.params.id;
+    console.log(favoriteId);
     try {
         const favorite = await favoriteCollection.findOne({
-            id: favoriteId,
+            _id: new ObjectId(favoriteId),
         });
         if (!favorite) {
             return res.status(404).json({ message: "odabran favorit nije pronađen" });

@@ -112,11 +112,11 @@ app.delete("/admin/:id", radniciMethods.deleteRadnik);
 
 /*Favoriti*/
 app.get("/favorit", favoriteMethods.getAllFavorites);
-app.get("/favorit/:id", favoriteMethods.getFavoriteByRaceId);
+app.get("/favorit/:id", favoriteMethods.getFavoritesById);
 app.get("/favorit/race/:id", favoriteMethods.getFavoriteByRaceId);
-app.get("/favorite/user/:id", favoriteMethods.getFavoriteByUserId);
-app.post("/favorite", favoriteMethods.newFavorite);
-app.delete("/favorite/:id", favoriteMethods.deleteFavorite);
+app.get("/favorit/user/:id", favoriteMethods.getFavoriteByUserId);
+app.post("/favorit", favoriteMethods.newFavorite);
+app.delete("/favorit/:id", favoriteMethods.deleteFavorite);
 
 app.listen(port, () => {
     console.log(`Servis radi na portu ${port}`);

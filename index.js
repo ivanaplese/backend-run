@@ -3,6 +3,7 @@ import db from "../backend-run/src/db.js";
 import { raceMethods } from "./controllers/raceController.js";
 import { guestMethods } from "./controllers/guestController.js";
 import { radniciMethods } from "./controllers/adminController.js";
+import { favoriteMethods } from "./controllers/favoritesController.js";
 //import data from "./store.js";
 import auth from "./src/auth.js";
 import axios from "axios";
@@ -109,6 +110,13 @@ app.get("/admin/email/:email", radniciMethods.getRadnikByEmail);
 app.post("/admin", raceMethods.newRace);
 app.delete("/admin/:id", radniciMethods.deleteRadnik);
 
+/*Favoriti*/
+app.get("/favorit", favoriteMethods.getAllFavorites);
+app.get("/favorit/:id", favoriteMethods.getFavoriteByRaceId);
+app.get("/favorit/race/:id", favoriteMethods.getFavoriteByRaceId);
+app.get("/favorite/user/:id", favoriteMethods.getFavoriteByUserId);
+app.post("/favorite", favoriteMethods.newFavorite);
+app.delete("/favorite/:id", favoriteMethods.deleteFavorite);
 
 app.listen(port, () => {
     console.log(`Servis radi na portu ${port}`);

@@ -1,7 +1,8 @@
 import db from "../src/db.js";
 const radniciCollection = db.collection("worker");
+import { ObjectId } from "mongodb";
 
-// Ispisivanje svih admina
+// Ispisivanje svih radnika
 export const getAllRadnici = async (req, res) => {
     try {
         const radnici = await radniciCollection.find().toArray();
@@ -10,8 +11,7 @@ export const getAllRadnici = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
-//Traženje samo jednog admina
+//Traženje samo jednog radnika
 export const getRadnikById = async (req, res) => {
     const radnikId = req.params.id;
     try {
@@ -26,8 +26,22 @@ export const getRadnikById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+export const getRadnikByEmail = async (req, res) => {
+    const radnikEmail = req.params.email;
+    try {
+        const radnik = await radniciCollection.findOne({ email: radnikEmail });
+        if (!radnik) {
+            return res
+                .status(404)
+                .json({ message: "Odabrani radnik nije pronađen." });
+        }
+        res.json(radnik);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
-// Dodavanje novog admina
+// Dodavanje novog gosta
 export const newRadnik = async (req, res) => {
     const { id, ime, prezime, godiste, role } = req.body;
     try {
@@ -46,7 +60,7 @@ export const newRadnik = async (req, res) => {
     }
 };
 
-// Brisanje samo jednog admina
+// Brisanje samo jednog radnika
 export const deleteRadnik = async (req, res) => {
     const radnikId = req.params.id;
     try {
@@ -61,11 +75,32 @@ export const deleteRadnik = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+export const changeEmail = async (req, res) => {
+    const workerId = req.body._id;
+    const workerEmail = req.body.email;
+    const workeUsername = req.body.username;
+    const { _id, email, username } = req.body;
+    try {
+        const result = await radniciCollection.updateOne(
+            { _id: new ObjectId(workerId) },
+            {
+                $set: {
+                    email: guestEmail,
+                    username: guestUsername,
+                },
+            }
+        );
+        res.status(201).json({ message: "Gost je updatan " });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 
 export const radniciMethods = {
     getAllRadnici,
     getRadnikById,
+    getRadnikByEmail,
     newRadnik,
     deleteRadnik,
 };

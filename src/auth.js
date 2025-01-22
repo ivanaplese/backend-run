@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const guestsCollection = db.collection("users");
+const workerCollection = db.collection("worker");
 
 guestsCollection.createIndex({ email: 50 }, { unique: true });
 
@@ -18,6 +19,7 @@ export default {
                 firstName: guestData.firstName,
                 lastName: guestData.lastName,
                 email: guestData.email,
+                birthDate: guestData.birthDate,
                 password: hashedPassword,
             });
         } catch (e) {
@@ -26,6 +28,88 @@ export default {
             } else {
                 throw e;
             }
+        }
+    },
+    async updatePasswordAdmin(adminData) {
+        const hashedPassword = await bcrypt.hash(adminData.password, 10);
+        try {
+            await workerCollection.updateOne(
+                { _id: new ObjectId(adminData._id) },
+                {
+                    $set: {
+                        password: hashedPassword,
+                    },
+                }
+            );
+        } catch (e) {
+            if (e.code === 11000) {
+                throw new Error("Korisnik ne postoji");
+            } else {
+                throw e;
+            }
+        }
+    },
+    async updatePasswordGuest(guestData) {
+        const hashedPassword = await bcrypt.hash(guestData.password, 10);
+        try {
+            await guestsCollection.updateOne(
+                { _id: new ObjectId(guestData._id) },
+                {
+                    $set: {
+                        password: hashedPassword,
+                    },
+                }
+            );
+        } catch (e) {
+            if (e.code === 11000) {
+                throw new Error("Korisnik ne postoji");
+            } else {
+                throw e;
+            }
+        }
+    },
+    async registerAdmin(adminData) {
+        const hashedPassword = await bcrypt.hash(adminData.password, 10);
+        try {
+            await workerCollection.insertOne({
+                _id: new ObjectId(),
+                username: adminData.username,
+                email: adminData.email,
+                role: adminData.role,
+                password: hashedPassword,
+            });
+        } catch (e) {
+            if (e.code === 11000) {
+                throw new Error("Email already exists");
+            } else {
+                throw e;
+            }
+        }
+    },
+    async authenticateAdmin(email, password) {
+        let adminData = await workerCollection.findOne({ email: email });
+        console.log("Received data: ", email, password);
+        console.log("User data from the database: ", adminData);
+        if (
+            adminData &&
+            adminData.password &&
+            (await bcrypt.compare(password, adminData.password))
+        ) {
+            delete adminData.password;
+            let token = jwt.sign(
+                { id: adminData._id },
+                process.env.JWT_SECRET || "default_secret",
+                {
+                    algorithm: "HS256",
+                    expiresIn: "1 week",
+                }
+            );
+            return {
+                token,
+                email: adminData.email,
+            };
+        } else {
+            throw new Error("Cannot authenticate");
         }
     },
     async authenticateGuest(email, password) {

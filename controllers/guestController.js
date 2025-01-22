@@ -70,7 +70,7 @@ export const changeEmail = async (req, res) => {
     const guestId = req.body._id;
     const guestEmail = req.body.email;
     const guestUsername = req.body.username;
-    const { _id, email, username } = req.body;
+
     try {
         const result = await guestsCollection.updateOne(
             { _id: new ObjectId(guestId) },

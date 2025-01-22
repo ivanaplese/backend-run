@@ -92,6 +92,7 @@ app.get("/race", raceMethods.getAllRaces);
 app.get("/race/:id", raceMethods.getRaceById);
 app.post("/race", raceMethods.newRace);
 app.delete("/race/:id", raceMethods.deleteRace);
+app.put("/race", raceMethods.changeRace);
 
 /*Gosti*/
 app.get("/guest", guestMethods.getAllGuests);

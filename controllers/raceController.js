@@ -1,5 +1,7 @@
 import db from "../src/db.js";
 const raceCollection = db.collection("races");
+import { ObjectId } from "mongodb";
+
 // Ispisivanje svih utrka
 export const getAllRaces = async (req, res) => {
     try {
@@ -11,6 +13,7 @@ export const getAllRaces = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 //Traženje samo jedne utrke
 export const getRaceById = async (req, res) => {
     const raceId = req.params.id;
@@ -26,6 +29,7 @@ export const getRaceById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 // Dodavanje nove utrke
 export const newRace = async (req, res) => {
     const { id, naziv, vrsta } = req.body;
@@ -42,6 +46,27 @@ export const newRace = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+export const changeRace = async (req, res) => {
+    const id = req.body._id;
+    const raceNaziv = req.body.naziv;
+    const raceVrsta = req.body.vrsta;
+    try {
+        const result = await raceCollection.updateOne(
+            { _id: new ObjectId(id) },
+            {
+                $set: {
+                    naziv: raceNaziv,
+                    vrsta: raceVrsta,
+                },
+            }
+        );
+        res.status(201).json({ message: "Utrka je uspješno updatana.", result });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 // Brisanje samo jedne utrke
 export const deleteRace = async (req, res) => {
     const raceId = req.params.id;
@@ -57,9 +82,11 @@ export const deleteRace = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 export const raceMethods = {
     getAllRaces,
     getRaceById,
     newRace,
+    changeRace,
     deleteRace,
 };

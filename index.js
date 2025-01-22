@@ -17,36 +17,13 @@ app.use(cors());
 app.use(express.json());
 
 dotenv.config();
-
-// MONGO DB
-
-// Za utrke
-app.get("/races", raceMethods.getAllRaces);
-app.get("/races/:id", raceMethods.getRaceById);
-app.post("/races", raceMethods.newRace);
-app.delete("/races", raceMethods.deleteRace);
-
-// Za goste
-app.get("/guests", guestMethods.getAllGuests);
-app.get("/guests/:id", guestMethods.getGuestById);
-app.post("/guests", guestMethods.newGuest);
-app.delete("/guests", guestMethods.deleteGuest);
-
-// Za admine
-app.get("/radnici", radniciMethods.getAllRadnici);
-app.get("/radnici/:id", radniciMethods.getRadnikById);
-app.post("/radnici", radniciMethods.newRadnik);
-app.delete("/radnici", radniciMethods.deleteRadnik);
-
-
-// registracijaaaaaaaaaaaaaaaaaaaaaaa 
-
 app.get("/tajna", [auth.verify], (req, res) => {
     res.json({ message: "Ovo je tajna " + req.jwt.email });
 });
 app.get("/tajna", (res, req) => {
     res.json({ message: "Tajna" + req.jwt.email });
 });
+
 app.post("/auth", async (req, res) => {
     let guestData = req.body;
 
@@ -61,7 +38,6 @@ app.post("/auth", async (req, res) => {
         return res.status(403).json({ error: error.message });
     }
 });
-
 app.post("/guests", async (req, res) => {
     let guestData = req.body;
     try {
@@ -72,23 +48,23 @@ app.post("/guests", async (req, res) => {
     }
 });
 
-app.post("/auth/change-password", async (req, res) => {
-    const { email, oldPassword, newPassword } = req.body;
-
-    if (!email || !oldPassword || !newPassword) {
-        return res.status(400).json({ error: "All fields are required" });
-    }
-
-    try {
-        const result = await auth.changePassword(email, oldPassword, newPassword);
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-
-    }
-});
+/*Utrke*/
+app.get("/race", raceMethods.getAllRaces);
+app.get("/race/:id", raceMethods.getRaceById);
+app.post("/race", raceMethods.newRace);
+app.delete("/race/:id", raceMethods.deleteRace);
+/*Gosti*/
+app.get("/guest", guestMethods.getAllGuests);
+app.get("/guest/:id", guestMethods.getGuestById);
+app.post("/guest", guestMethods.newGuest);
+app.delete("/guest/:id", guestMethods.deleteGuest);
+/*Admin*/
+app.get("/admin", radniciMethods.getAllRadnici);
+app.get("/admin/:id", radniciMethods.getRadnikById);
+app.post("/admin", raceMethods.newRace);
+app.delete("/admin/:id", radniciMethods.deleteRadnik);
 
 
 app.listen(port, () => {
     console.log(`Servis radi na portu ${port}`);
-})
+});

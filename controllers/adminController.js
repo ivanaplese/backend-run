@@ -46,11 +46,12 @@ export const newRadnik = async (req, res) => {
     const { id, ime, prezime, godiste, role } = req.body;
     try {
         const result = await radniciCollection.insertOne({
-            id,
-            ime,
-            prezime,
-            godiste,
-            role,
+            firstName,
+            lastName,
+            phoneNumber,
+            email,
+            password,
+            birthDate,
         });
         res
             .status(201)

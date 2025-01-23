@@ -107,7 +107,6 @@ app.put("/guest", guestMethods.changeEmail);
 app.get("/admin", radniciMethods.getAllRadnici);
 app.get("/admin/:id", radniciMethods.getRadnikById);
 app.get("/admin/email/:email", radniciMethods.getRadnikByEmail);
-app.post("/admin", raceMethods.newRace);
 app.delete("/admin/:id", radniciMethods.deleteRadnik);
 
 /*Favoriti*/

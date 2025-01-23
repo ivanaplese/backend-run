@@ -74,6 +74,10 @@ export default {
             await workerCollection.insertOne({
                 _id: new ObjectId(),
                 username: adminData.username,
+                firstName: adminData.firstName,
+                lastName: adminData.lastName,
+                email: adminData.email,
+                birthDate: adminData.birthDate,
                 email: adminData.email,
                 role: adminData.role,
                 password: hashedPassword,

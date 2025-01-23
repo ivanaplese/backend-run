@@ -108,6 +108,7 @@ app.get("/admin", radniciMethods.getAllRadnici);
 app.get("/admin/:id", radniciMethods.getRadnikById);
 app.get("/admin/email/:email", radniciMethods.getRadnikByEmail);
 app.delete("/admin/:id", radniciMethods.deleteRadnik);
+app.put("/admin", radniciMethods.changeEmail);
 
 /*Favoriti*/
 app.get("/favorit", favoriteMethods.getAllFavorites);

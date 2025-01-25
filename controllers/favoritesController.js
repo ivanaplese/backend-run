@@ -68,12 +68,18 @@ export const newFavorite = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
 export const deleteFavorite = async (req, res) => {
     const favoriteId = req.params.id;
     try {
-        const result = await guestsCollection.deleteOne({
-            id: guestId,
+        const result = await favoriteCollection.deleteOne({
+            _id: new ObjectId(favoriteId),
         });
+
+
+        console.log(favoriteId);
+
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: "Favorit not found." });
         }

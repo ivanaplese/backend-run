@@ -43,9 +43,12 @@ export const getFavoriteByRaceId = async (req, res) => {
 export const getFavoriteByUserId = async (req, res) => {
     const favUserId = req.params.id;
     try {
-        const favorite = await favoriteCollection.findOne({
-            userId: favUserId,
-        });
+        const favorite = await favoriteCollection
+            .find({
+                userId: favUserId,
+            })
+            .toArray();
+        console.log(favorite);
         if (!favorite) {
             return res.status(404).json({ message: "odabran favorit nije pronađen" });
         }

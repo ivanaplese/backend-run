@@ -18,7 +18,7 @@ export const getAllRaces = async (req, res) => {
 export const getRaceById = async (req, res) => {
     const raceId = req.params.id;
     try {
-        const race = await raceCollection.findOne({ id: raceId });
+        const race = await raceCollection.findOne({ _id: new ObjectId(raceId) });
         if (!race) {
             return res
                 .status(404)
@@ -32,13 +32,13 @@ export const getRaceById = async (req, res) => {
 
 // Dodavanje nove utrke
 export const newRace = async (req, res) => {
-    const { id, naziv, vrsta, datum, lokacija, opis } = req.body;
+    const { id, naziv, vrsta, datum, location, opis } = req.body;
     try {
         const result = await raceCollection.insertOne({
             naziv,
             vrsta,
             datum,
-            lokacija,
+            location,
             opis,
         });
         res
@@ -74,7 +74,7 @@ export const deleteRace = async (req, res) => {
     const raceId = req.params.id;
     try {
         const result = await raceCollection.deleteOne({
-            id: raceId,
+            _id: new ObjectId(raceId),
         });
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: "Race not found." });

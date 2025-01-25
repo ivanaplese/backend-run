@@ -32,12 +32,14 @@ export const getRaceById = async (req, res) => {
 
 // Dodavanje nove utrke
 export const newRace = async (req, res) => {
-    const { id, naziv, vrsta } = req.body;
+    const { id, naziv, vrsta, datum, lokacija, opis } = req.body;
     try {
         const result = await raceCollection.insertOne({
-            id,
             naziv,
             vrsta,
+            datum,
+            lokacija,
+            opis,
         });
         res
             .status(201)

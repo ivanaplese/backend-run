@@ -53,6 +53,8 @@ export const changeRace = async (req, res) => {
     const id = req.body._id;
     const raceNaziv = req.body.naziv;
     const raceVrsta = req.body.vrsta;
+    const raceLocation = req.body.lokacija;
+    const raceOpis = req.body.opis;
     try {
         const result = await raceCollection.updateOne(
             { _id: new ObjectId(id) },
@@ -60,6 +62,8 @@ export const changeRace = async (req, res) => {
                 $set: {
                     naziv: raceNaziv,
                     vrsta: raceVrsta,
+                    location: raceLocation,
+                    opis: raceOpis,
                 },
             }
         );

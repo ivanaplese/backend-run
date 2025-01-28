@@ -63,19 +63,34 @@ export const getRaceImage = async (req, res) => {
 };
 
 //Traženje samo jedne utrke
+
 export const getRaceById = async (req, res) => {
     const raceId = req.params.id;
+
     try {
+        //fetch the race from the collection
         const race = await raceCollection.findOne({ _id: new ObjectId(raceId) });
 
-        if (!race || !race.imageId) {
-            return res.status(404).json({ message: "Image not found." });
+        // Check if the race was found
+        if (!race) {
+            return res.status(404).json({ message: "Race not found." });
         }
 
-        const downloadStream = bucket.openDownloadStream(race.imageId);
-        res.set("Content-Type", "image/jpeg");
-        downloadStream.pipe(res);
+        // If race is found, you can return the race data (including the imageId, if present)
+        const raceData = {
+            _id: race._id,
+            naziv: race.naziv,
+            vrsta: race.vrsta,
+            datum: race.datum,
+            lokacija: race.location,
+            opis: race.opis,
+            imageId: race.imageId || null, // Ensure that imageId is returned, even if it's null
+        };
+        // Return the race data as a JSON response
+        res.json(raceData);
+
     } catch (error) {
+        // Return an error if there was a problem fetching the race
         res.status(500).json({ error: error.message });
     }
 };

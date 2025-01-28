@@ -84,6 +84,7 @@ export const getRaceById = async (req, res) => {
             datum: race.datum,
             lokacija: race.location,
             opis: race.opis,
+            creatorId: race.creatorId,
             imageId: race.imageId || null, // Ensure that imageId is returned, even if it's null
         };
         // Return the race data as a JSON response
@@ -105,7 +106,7 @@ export const newRace = async (req, res) => {
             return res.status(400).json({ error: "Error uploading image" });
         }
 
-        const { naziv, vrsta, datum, location, opis } = req.body;
+        const { naziv, vrsta, datum, location, opis, creatorId } = req.body;
 
         try {
             let fileId = null;
@@ -128,6 +129,7 @@ export const newRace = async (req, res) => {
                 datum,
                 location,
                 opis,
+                creatorId,
                 imageId: fileId, // Spremamo ID slike (može biti `null`)
             });
 

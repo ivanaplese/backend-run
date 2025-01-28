@@ -88,6 +88,7 @@ app.post("/admins", async (req, res) => {
         res.status(500).json({ error: e.message });
     }
 });
+
 /*Utrke*/
 app.get("/race", raceMethods.getAllRaces);
 app.get("/race/:id", raceMethods.getRaceById);
@@ -95,13 +96,13 @@ app.post("/race", raceMethods.newRace);
 app.delete("/race/:id", raceMethods.deleteRace);
 app.put("/race", raceMethods.changeRace);
 app.get("/race/slika/:id/image", raceMethods.getRaceImage);
+app.get("/races/creator/:creatorId", getRacesByCreatorId);
 
 
 /*Gosti*/
 app.get("/guest", guestMethods.getAllGuests);
 app.get("/guest/:id", guestMethods.getGuestById);
 app.get("/guest/email/:email", guestMethods.getGuestByEmail);
-
 app.delete("/guest/:id", guestMethods.deleteGuest);
 app.put("/guest", guestMethods.changeEmail);
 

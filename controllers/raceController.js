@@ -20,6 +20,27 @@ export const getAllRaces = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+// Traženje utrka po creatorId
+export const getRacesByCreatorId = async (req, res) => {
+    const creatorId = req.params.creatorId;
+    try {
+        // Fetch the races created by the provided creatorId
+        const races = await raceCollection.find({ creatorId }).toArray();
+        // Check if races are found
+        if (races.length === 0) {
+            return res
+                .status(404)
+                .json({ message: "No races found for this creator." });
+        }
+        // Return the races created by this creator
+        res.json(races);
+    } catch (error) {
+        // Return an error if there was a problem fetching the races
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 export const getRaceImage = async (req, res) => {
     const raceId = req.params.id;
     console.log("Race ID get image");
@@ -188,6 +209,7 @@ export const deleteRace = async (req, res) => {
 
 export const raceMethods = {
     getRaceImage,
+    getRacesByCreatorId,
     getAllRaces,
     getRaceById,
     newRace,

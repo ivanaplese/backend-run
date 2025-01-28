@@ -96,7 +96,7 @@ app.post("/race", raceMethods.newRace);
 app.delete("/race/:id", raceMethods.deleteRace);
 app.put("/race", raceMethods.changeRace);
 app.get("/race/slika/:id/image", raceMethods.getRaceImage);
-app.get("/races/creator/:creatorId", getRacesByCreatorId);
+app.get("/races/creator/:creatorId", raceMethods.getRacesByCreatorId);
 
 
 /*Gosti*/

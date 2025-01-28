@@ -17,6 +17,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.12.0",
     "mongoose": "^8.9.4",
+    "muller": "^1.1.0",
+    "multer": "^1.4.5-lts.1",
     "node": "^23.5.0"
   },
   "type": "module"

@@ -13,6 +13,7 @@ export const getAllGuests = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 //Traženje samo jednog gosta
 export const getGuestById = async (req, res) => {
     const guestId = req.params.id;
@@ -28,7 +29,6 @@ export const getGuestById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 export const getGuestByEmail = async (req, res) => {
     const guestEmail = req.params.email;
     try {
@@ -65,7 +65,6 @@ export const newGuest = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 export const changeEmail = async (req, res) => {
     const guestId = req.body._id;
     const guestEmail = req.body.email;
@@ -94,9 +93,11 @@ export const deleteGuest = async (req, res) => {
         const result = await guestsCollection.deleteOne({
             id: guestId,
         });
+
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: "Guest not found." });
         }
+
         res.json({ message: "Gost je uspješno obrisan!" });
     } catch (error) {
         res.status(500).json({ error: error.message });

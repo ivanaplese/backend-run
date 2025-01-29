@@ -9,7 +9,6 @@ const workerCollection = db.collection("worker");
 
 guestsCollection.createIndex({ email: 50 }, { unique: true });
 
-
 export default {
     async registerGuest(guestData) {
         const hashedPassword = await bcrypt.hash(guestData.password, 10);
@@ -93,8 +92,10 @@ export default {
     },
     async authenticateAdmin(email, password) {
         let adminData = await workerCollection.findOne({ email: email });
+
         console.log("Received data: ", email, password);
         console.log("User data from the database: ", adminData);
+
         if (
             adminData &&
             adminData.password &&
@@ -119,8 +120,10 @@ export default {
     },
     async authenticateGuest(email, password) {
         let guestData = await guestsCollection.findOne({ email: email });
+
         console.log("Received data: ", email, password);
         console.log("User data from the database: ", guestData);
+
         if (
             guestData &&
             guestData.password &&
@@ -158,26 +161,4 @@ export default {
             return res.status(403).send();
         }
     },
-    //novo
-    async changePassword(email, oldPassword, newPassword) {
-        let guestData = await guestsCollection.findOne({ email: email });
-        if (!guestData) {
-            throw new Error("User not found");
-        }
-
-        const isPasswordValid = await bcrypt.compare(oldPassword, guestData.password);
-        if (!isPasswordValid) {
-            throw new Error("Incorrect old password");
-        }
-
-        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-        await guestsCollection.updateOne(
-            { email: email },
-            { $set: { password: hashedNewPassword } }
-        );
-
-        return { message: "Password successfully updated" };
-    }
-
 };

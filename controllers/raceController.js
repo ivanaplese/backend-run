@@ -23,16 +23,19 @@ export const getAllRaces = async (req, res) => {
 // Traženje utrka po creatorId
 export const getRacesByCreatorId = async (req, res) => {
     const creatorId = req.params.creatorId;
+
     try {
         // Fetch the races created by the provided creatorId
         console.log("Trazenje po creator id", creatorId);
         const races = await raceCollection.find({ creatorId }).toArray();
+
         // Check if races are found
         if (races.length === 0) {
             return res
                 .status(404)
                 .json({ message: "No races found for this creator." });
         }
+
         // Return the races created by this creator
         res.json(races);
     } catch (error) {
@@ -40,7 +43,6 @@ export const getRacesByCreatorId = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 
 export const getRaceImage = async (req, res) => {
     const raceId = req.params.id;
@@ -90,7 +92,7 @@ export const getRaceById = async (req, res) => {
     const raceId = req.params.id;
 
     try {
-        //fetch the race from the collection
+        // Fetch the race from the collection
         const race = await raceCollection.findOne({ _id: new ObjectId(raceId) });
 
         // Check if the race was found
@@ -109,9 +111,9 @@ export const getRaceById = async (req, res) => {
             creatorId: race.creatorId,
             imageId: race.imageId || null, // Ensure that imageId is returned, even if it's null
         };
+
         // Return the race data as a JSON response
         res.json(raceData);
-
     } catch (error) {
         // Return an error if there was a problem fetching the race
         res.status(500).json({ error: error.message });

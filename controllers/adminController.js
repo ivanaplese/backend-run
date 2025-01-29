@@ -11,9 +11,11 @@ export const getAllRadnici = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 //Traženje samo jednog radnika
 export const getRadnikById = async (req, res) => {
     const radnikId = req.params.id;
+
     try {
         const radnik = await radniciCollection.findOne({ id: radnikId });
         if (!radnik) {
@@ -28,6 +30,7 @@ export const getRadnikById = async (req, res) => {
 };
 export const getRadnikByEmail = async (req, res) => {
     const radnikEmail = req.params.email;
+
     try {
         const radnik = await radniciCollection.findOne({ email: radnikEmail });
         if (!radnik) {
@@ -69,9 +72,11 @@ export const deleteRadnik = async (req, res) => {
         const result = await radniciCollection.deleteOne({
             id: radnikId,
         });
+
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: "Radnik nije pronađen." });
         }
+
         res.json({ message: "Radnik je uspješno obrisan!" });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -97,7 +102,7 @@ export const changeEmail = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
+//
 
 export const radniciMethods = {
     getAllRadnici,

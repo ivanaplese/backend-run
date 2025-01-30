@@ -168,12 +168,36 @@ export const newRace = async (req, res) => {
     });
 };
 
+// export const changeRace = async (req, res) => {
+//     const id = req.body._id;
+//     const raceNaziv = req.body.naziv;
+//     const raceVrsta = req.body.vrsta;
+//     const raceLocation = req.body.lokacija;
+//     const raceOpis = req.body.opis;
+//     try {
+//         const result = await raceCollection.updateOne(
+//             { _id: new ObjectId(id) },
+//             {
+//                 $set: {
+//                     naziv: raceNaziv,
+//                     vrsta: raceVrsta,
+//                     location: raceLocation,
+//                     opis: raceOpis,
+//                 },
+//             }
+//         );
+//         res.status(201).json({ message: "Utrka je uspješno updatana.", result });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
 export const changeRace = async (req, res) => {
     const id = req.body._id;
     const raceNaziv = req.body.naziv;
     const raceVrsta = req.body.vrsta;
     const raceLocation = req.body.lokacija;
     const raceOpis = req.body.opis;
+    const raceDatum = req.body.datum;
     try {
         const result = await raceCollection.updateOne(
             { _id: new ObjectId(id) },
@@ -183,10 +207,11 @@ export const changeRace = async (req, res) => {
                     vrsta: raceVrsta,
                     location: raceLocation,
                     opis: raceOpis,
+                    datum: raceDatum,
                 },
             }
         );
-        res.status(201).json({ message: "Utrka je uspješno updatana.", result });
+        res.status(201).json({ message: "Utrka je uspješno updateana.", result });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

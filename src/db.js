@@ -15,3 +15,4 @@ try {
 }
 
 export default db;
+

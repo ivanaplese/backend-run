@@ -129,5 +129,9 @@ app.delete("/favorit/:id", favoriteMethods.deleteFavorite);
 //     console.log(`Servis radi na portu ${port}`);
 // });
 
+app.get("/", (req, res) => {
+    res.json({ message: "Backend is running on Vercel!" });
+});
+
 /* Export aplikacije za Vercel */
 export default app;

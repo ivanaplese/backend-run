@@ -1,5 +1,4 @@
 import express from "express";
-// import db from "../backend-run/src/db.js";
 import { raceMethods } from "./controllers/raceController.js";
 import { guestMethods } from "./controllers/guestController.js";
 import { radniciMethods } from "./controllers/adminController.js";

@@ -5,7 +5,7 @@ import { ObjectId } from "mongodb";
 export const getAllFavorites = async (req, res) => {
     try {
         const favorite = await favoriteCollection.find().toArray();
-        console.log("Dohvaćeni parovi favorita", favorite); // Dodano za debug
+        console.log("Dohvaćeni parovi favorita", favorite);
         res.json(favorite);
     } catch (error) {
         console.error("Greška pri dohvaćanju utrka:", error.message);

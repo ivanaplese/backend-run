@@ -9,37 +9,37 @@ const upload = multer({ storage });
 
 const bucket = new GridFSBucket(db, { bucketName: "uploads" });
 
-// Ispisivanje svih utrka
+
 export const getAllRaces = async (req, res) => {
     try {
         const race = await raceCollection.find().toArray();
-        console.log("Dohvaćene utrke:", race); // Dodano za debug
+        console.log("Dohvaćene utrke:", race);
         res.json(race);
     } catch (error) {
         console.error("Greška pri dohvaćanju utrka:", error.message);
         res.status(500).json({ error: error.message });
     }
 };
-// Traženje utrka po creatorId
+
 export const getRacesByCreatorId = async (req, res) => {
     const creatorId = req.params.creatorId;
 
     try {
-        // Fetch the races created by the provided creatorId
+
         console.log("Trazenje po creator id", creatorId);
         const races = await raceCollection.find({ creatorId }).toArray();
 
-        // Check if races are found
+
         if (races.length === 0) {
             return res
                 .status(404)
                 .json({ message: "No races found for this creator." });
         }
 
-        // Return the races created by this creator
+
         res.json(races);
     } catch (error) {
-        // Return an error if there was a problem fetching the races
+
         res.status(500).json({ error: error.message });
     }
 };
@@ -56,12 +56,12 @@ export const getRaceImage = async (req, res) => {
             return res.status(404).send("Image not found.");
         }
 
-        const imageId = new ObjectId(race.imageId); // Ensure the imageId is an ObjectId
+        const imageId = new ObjectId(race.imageId);
         const downloadStream = bucket.openDownloadStream(imageId);
 
         downloadStream.on("error", (err) => {
             console.error("Error retrieving image:", err.message);
-            // Only send response once
+
             if (!res.headersSent) {
                 return res.status(404).send("Image not found.");
             }
@@ -69,17 +69,17 @@ export const getRaceImage = async (req, res) => {
 
         downloadStream.on("end", () => {
             console.log("Image stream ended unexpectedly.");
-            // Ensure response isn't sent again
+
             if (!res.headersSent) {
                 return res.status(404).send("Image not found.");
             }
         });
 
-        // Pipe the image to the response object
+
         downloadStream.pipe(res);
     } catch (error) {
         console.error("Error retrieving image:", error.message);
-        // Ensure response isn't sent again
+
         if (!res.headersSent) {
             return res.status(500).json({ error: error.message });
         }
@@ -92,15 +92,15 @@ export const getRaceById = async (req, res) => {
     const raceId = req.params.id;
 
     try {
-        // Fetch the race from the collection
+
         const race = await raceCollection.findOne({ _id: new ObjectId(raceId) });
 
-        // Check if the race was found
+
         if (!race) {
             return res.status(404).json({ message: "Race not found." });
         }
 
-        // If race is found, you can return the race data (including the imageId, if present)
+
         const raceData = {
             _id: race._id,
             naziv: race.naziv,
@@ -109,21 +109,20 @@ export const getRaceById = async (req, res) => {
             lokacija: race.location,
             opis: race.opis,
             creatorId: race.creatorId,
-            imageId: race.imageId || null, // Ensure that imageId is returned, even if it's null
+            imageId: race.imageId || null,
         };
 
-        // Return the race data as a JSON response
+
         res.json(raceData);
     } catch (error) {
-        // Return an error if there was a problem fetching the race
+
         res.status(500).json({ error: error.message });
     }
 };
 
 // Dodavanje nove utrke
 export const newRace = async (req, res) => {
-    const uploadSingle = upload.single("image"); // Ključ "image" mora odgovarati onom na frontendu
-
+    const uploadSingle = upload.single("image");
     uploadSingle(req, res, async (err) => {
         if (err) {
             console.error("Error during image upload:", err);
@@ -135,13 +134,12 @@ export const newRace = async (req, res) => {
         try {
             let fileId = null;
 
-            // Debug: provjera primljene datoteke
             if (req.file) {
                 console.log("File received:", req.file);
 
                 const uploadStream = bucket.openUploadStream(req.file.originalname);
                 uploadStream.end(req.file.buffer);
-                fileId = uploadStream.id; // Sprema ID slike
+                fileId = uploadStream.id;
                 console.log("File uploaded to GridFS with ID:", fileId);
             } else {
                 console.log("No file received");
@@ -154,9 +152,9 @@ export const newRace = async (req, res) => {
                 location,
                 opis,
                 creatorId,
-                imageId: fileId, // Spremamo ID slike (može biti `null`)
-            });
-
+                imageId: fileId ? new ObjectId(fileId) : null
+                ,
+            })
             res.status(201).json({
                 message: "Utrka je uspješno dodana.",
                 id: result.insertedId,
@@ -168,29 +166,7 @@ export const newRace = async (req, res) => {
     });
 };
 
-// export const changeRace = async (req, res) => {
-//     const id = req.body._id;
-//     const raceNaziv = req.body.naziv;
-//     const raceVrsta = req.body.vrsta;
-//     const raceLocation = req.body.lokacija;
-//     const raceOpis = req.body.opis;
-//     try {
-//         const result = await raceCollection.updateOne(
-//             { _id: new ObjectId(id) },
-//             {
-//                 $set: {
-//                     naziv: raceNaziv,
-//                     vrsta: raceVrsta,
-//                     location: raceLocation,
-//                     opis: raceOpis,
-//                 },
-//             }
-//         );
-//         res.status(201).json({ message: "Utrka je uspješno updatana.", result });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// };
+
 export const changeRace = async (req, res) => {
     const id = req.body._id;
     const raceNaziv = req.body.naziv;

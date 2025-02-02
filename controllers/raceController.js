@@ -6,9 +6,7 @@ import { GridFSBucket } from "mongodb";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-
 const bucket = new GridFSBucket(db, { bucketName: "uploads" });
-
 
 export const getAllRaces = async (req, res) => {
     try {
@@ -23,20 +21,14 @@ export const getAllRaces = async (req, res) => {
 
 export const getRacesByCreatorId = async (req, res) => {
     const creatorId = req.params.creatorId;
-
     try {
-
         console.log("Trazenje po creator id", creatorId);
         const races = await raceCollection.find({ creatorId }).toArray();
-
-
         if (races.length === 0) {
             return res
                 .status(404)
                 .json({ message: "No races found for this creator." });
         }
-
-
         res.json(races);
     } catch (error) {
 
@@ -47,29 +39,22 @@ export const getRacesByCreatorId = async (req, res) => {
 export const getRaceImage = async (req, res) => {
     const raceId = req.params.id;
     console.log("Race ID get image");
-
     try {
         const race = await raceCollection.findOne({ _id: new ObjectId(raceId) });
-
         if (!race || !race.imageId) {
             console.log(`Race not found or no imageId: ${raceId}`);
             return res.status(404).send("Image not found.");
         }
-
         const imageId = new ObjectId(race.imageId);
         const downloadStream = bucket.openDownloadStream(imageId);
-
         downloadStream.on("error", (err) => {
             console.error("Error retrieving image:", err.message);
-
             if (!res.headersSent) {
                 return res.status(404).send("Image not found.");
             }
         });
-
         downloadStream.on("end", () => {
             console.log("Image stream ended unexpectedly.");
-
             if (!res.headersSent) {
                 return res.status(404).send("Image not found.");
             }
@@ -79,7 +64,6 @@ export const getRaceImage = async (req, res) => {
         downloadStream.pipe(res);
     } catch (error) {
         console.error("Error retrieving image:", error.message);
-
         if (!res.headersSent) {
             return res.status(500).json({ error: error.message });
         }
@@ -90,17 +74,11 @@ export const getRaceImage = async (req, res) => {
 
 export const getRaceById = async (req, res) => {
     const raceId = req.params.id;
-
     try {
-
         const race = await raceCollection.findOne({ _id: new ObjectId(raceId) });
-
-
         if (!race) {
             return res.status(404).json({ message: "Race not found." });
         }
-
-
         const raceData = {
             _id: race._id,
             naziv: race.naziv,
@@ -111,11 +89,8 @@ export const getRaceById = async (req, res) => {
             creatorId: race.creatorId,
             imageId: race.imageId || null,
         };
-
-
         res.json(raceData);
     } catch (error) {
-
         res.status(500).json({ error: error.message });
     }
 };
@@ -128,15 +103,11 @@ export const newRace = async (req, res) => {
             console.error("Error during image upload:", err);
             return res.status(400).json({ error: "Error uploading image" });
         }
-
         const { naziv, vrsta, datum, location, opis, creatorId } = req.body;
-
         try {
             let fileId = null;
-
             if (req.file) {
                 console.log("File received:", req.file);
-
                 const uploadStream = bucket.openUploadStream(req.file.originalname);
                 uploadStream.end(req.file.buffer);
                 fileId = uploadStream.id;
@@ -144,7 +115,6 @@ export const newRace = async (req, res) => {
             } else {
                 console.log("No file received");
             }
-
             const result = await raceCollection.insertOne({
                 naziv,
                 vrsta,
@@ -152,8 +122,7 @@ export const newRace = async (req, res) => {
                 location,
                 opis,
                 creatorId,
-                imageId: fileId ? new ObjectId(fileId) : null
-                ,
+                imageId: fileId ? new ObjectId(fileId) : null,
             })
             res.status(201).json({
                 message: "Utrka je uspješno dodana.",
@@ -165,7 +134,6 @@ export const newRace = async (req, res) => {
         }
     });
 };
-
 
 export const changeRace = async (req, res) => {
     const id = req.body._id;

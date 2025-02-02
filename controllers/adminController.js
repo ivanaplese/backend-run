@@ -15,7 +15,6 @@ export const getAllRadnici = async (req, res) => {
 //Traženje samo jednog radnika
 export const getRadnikById = async (req, res) => {
     const radnikId = req.params.id;
-
     try {
         const radnik = await radniciCollection.findOne({ id: radnikId });
         if (!radnik) {
@@ -28,6 +27,7 @@ export const getRadnikById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 export const getRadnikByEmail = async (req, res) => {
     const radnikEmail = req.params.email;
 
@@ -82,6 +82,7 @@ export const deleteRadnik = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 export const changeEmail = async (req, res) => {
     const workerId = req.body._id;
     const workerEmail = req.body.email;
@@ -102,7 +103,6 @@ export const changeEmail = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-//
 
 export const radniciMethods = {
     getAllRadnici,

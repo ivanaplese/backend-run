@@ -72,6 +72,7 @@ export const newFavorite = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 export const deleteFavorite = async (req, res) => {
     const favoriteId = req.params.id;
     try {
@@ -82,7 +83,6 @@ export const deleteFavorite = async (req, res) => {
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: "Favorit not found." });
         }
-
         res.json({ message: "Favorit je uspješno obrisan!" });
     } catch (error) {
         res.status(500).json({ error: error.message });

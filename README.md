@@ -20,5 +20,6 @@ nodemon index / node index
 
 - PROGRAMSKO: Aplikacija run! objedinjuje sve potrebne informacije amaterskim ili profesionalnim trkaćima. Na homepage-u utrke su podijeljene u tri katagorije: maraton, polumaraton i trail staza. Korisnik može pregledati aktualne odnosno od strane administratora objavljene trkaće događaje u Hrvatskoj, ili ih pretražiti prema ključnim riječima u search bar-u. Pri pregledu utrka korisnik vidi sliku, ime, datum održavanja, lokaciju , a odabirom te utrke, otvara se detaljan opis. Ako je korisnik ulogiran, tada može dodati utrku u favorite te pregledati svoje favorite ili ukloniti iz favorita. Ako želi, korisnik može promjeniti svoje ime ili password, ili logout-ati iz aplikacije. Admin ima veće ovlasti: on dodaje utrke. Nakon što doda utrku i unese sve njene podatke, može promjeniti bilo koji podatak i time ažurirati utrku. Može ju i obrisati.
   
-
+Link na javni prototip: (https://www.figma.com/proto/oihTuPyoglhteYa1I1P10u/run!?node-id=17-804&starting-point-node-id=17%3A804&t=sQhPesBKPXJrfwwP-1)
 - Link na javni URL: (https://frontend-run.vercel.app/)
+- Link na javni video: (https://www.youtube.com/watch?v=-WtM5LoiZqs)
